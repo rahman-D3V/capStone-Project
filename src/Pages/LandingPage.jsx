@@ -30,6 +30,7 @@ import {
 } from "react-icons/md";
 import { HiOutlineFingerPrint } from "react-icons/hi";
 import { RiRobot2Line } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 function useReveal() {
   const ref = useRef(null);
@@ -328,12 +329,12 @@ export default function Landing() {
             ))}
           </div>
           <div className="flex items-center gap-3">
-            <button className="hidden sm:block text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium px-3 py-1.5">
+            <Link to={"/login"} className="hidden sm:block text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium px-3 py-1.5">
               Sign in
-            </button>
-            <button className="text-sm bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
+            </Link>
+            <Link to={"/register"} className="text-sm bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
               Open Account Free
-            </button>
+            </Link>
           </div>
         </div>
       </nav>

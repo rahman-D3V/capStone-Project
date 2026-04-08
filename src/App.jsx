@@ -7,13 +7,15 @@ import Dashboard from "./Pages/Dashboard";
 import Profile from "./Pages/Profile";
 import LandingPage from "./Pages/LandingPage";
 import Landing from "./Pages/LandingPage";
+import SignupPage from "./Pages/Register";
+import SigninPage from "./Pages/Login";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<SigninPage />} />
+      <Route path="/register" element={<SignupPage />} />
       <Route path="/otp" element={<OTP />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/profile" element={<Profile />} />
