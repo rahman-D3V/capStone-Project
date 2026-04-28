@@ -32,6 +32,8 @@ import { HiOutlineFingerPrint } from "react-icons/hi";
 import { RiRobot2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
+
+
 function useReveal() {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -301,8 +303,90 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans antialiased text-slate-800">
-      <style>{`@keyframes heroFadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`}</style>
+    <div className="min-h-screen bg-slate-50/95 font-sans antialiased text-slate-800 overflow-hidden relative">
+      {/* Animated Bubbles Background - Enhanced for Light Theme */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
+        {/* Large Bubbles */}
+        <div className="bubble bubble-1" style={{ width: '250px', height: '250px', top: '5%', left: '5%' }} />
+        <div className="bubble bubble-2" style={{ width: '180px', height: '180px', top: '15%', right: '8%' }} />
+        <div className="bubble bubble-3" style={{ width: '200px', height: '200px', top: '45%', left: '3%' }} />
+        <div className="bubble bubble-4" style={{ width: '220px', height: '220px', top: '60%', right: '5%' }} />
+        <div className="bubble bubble-5" style={{ width: '160px', height: '160px', bottom: '8%', left: '10%' }} />
+        <div className="bubble bubble-6" style={{ width: '190px', height: '190px', bottom: '5%', right: '12%' }} />
+        
+        {/* Medium Bubbles */}
+        <div className="bubble bubble-7" style={{ width: '140px', height: '140px', top: '25%', left: '40%' }} />
+        <div className="bubble bubble-8" style={{ width: '130px', height: '130px', top: '70%', left: '35%' }} />
+        <div className="bubble bubble-9" style={{ width: '150px', height: '150px', top: '35%', right: '25%' }} />
+        
+        {/* Small Bubbles */}
+        <div className="bubble bubble-10" style={{ width: '100px', height: '100px', top: '50%', left: '20%' }} />
+        <div className="bubble bubble-11" style={{ width: '90px', height: '90px', top: '80%', right: '30%' }} />
+        <div className="bubble bubble-12" style={{ width: '110px', height: '110px', top: '10%', left: '50%' }} />
+      </div>
+      <style>{`
+        @keyframes heroFadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        
+        @keyframes bubbleFloat1 {
+          0% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -40px) scale(1.05); }
+          66% { transform: translate(-20px, -80px) scale(0.98); }
+          100% { transform: translate(0, 0) scale(1); }
+        }
+        
+        @keyframes bubbleFloat2 {
+          0% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(-35px, -50px) scale(1.08); }
+          66% { transform: translate(25px, -70px) scale(0.95); }
+          100% { transform: translate(0, 0) scale(1); }
+        }
+        
+        @keyframes bubbleFloat3 {
+          0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+          50% { transform: translate(20px, -60px) scale(1.1) rotate(180deg); }
+          100% { transform: translate(0, 0) scale(1) rotate(360deg); }
+        }
+        
+        @keyframes bubblePulse {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.8; }
+        }
+        
+        .bubble {
+          position: absolute;
+          border-radius: 50%;
+          background: radial-gradient(circle at 35% 35%, 
+            rgba(125, 211, 252, 0.4), 
+            rgba(56, 189, 248, 0.5) 40%, 
+            rgba(14, 165, 233, 0.6) 70%,
+            rgba(2, 132, 199, 0.7)
+          );
+          border: 2.5px solid rgba(56, 189, 248, 0.7);
+          box-shadow: 
+            inset -6px -6px 18px rgba(2, 132, 199, 0.3),
+            inset 6px 6px 18px rgba(186, 230, 253, 0.4),
+            0 10px 40px rgba(56, 189, 248, 0.4),
+            0 0 50px rgba(14, 165, 233, 0.3);
+          backdrop-filter: blur(6px);
+          animation: bubblePulse 4s ease-in-out infinite;
+        }
+        
+        .bubble-1 { animation: bubbleFloat1 18s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 0s; }
+        .bubble-2 { animation: bubbleFloat2 16s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 2s; }
+        .bubble-3 { animation: bubbleFloat3 20s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 1s; }
+        .bubble-4 { animation: bubbleFloat1 17s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 3s; }
+        .bubble-5 { animation: bubbleFloat2 19s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 1.5s; }
+        .bubble-6 { animation: bubbleFloat3 15s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 2.5s; }
+        .bubble-7 { animation: bubbleFloat1 14s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 4s; }
+        .bubble-8 { animation: bubbleFloat2 16s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 0.5s; }
+        .bubble-9 { animation: bubbleFloat3 18s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 3.5s; }
+        .bubble-10 { animation: bubbleFloat1 13s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 2.8s; }
+        .bubble-11 { animation: bubbleFloat2 15s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 1.2s; }
+        .bubble-12 { animation: bubbleFloat3 17s ease-in-out infinite, bubblePulse 4s ease-in-out infinite; animation-delay: 4.5s; }
+      `}</style>
+
+      {/* Content wrapper to keep it above bubbles */}
+      <div className="relative z-10">
 
       {/* NAV */}
       <nav
@@ -332,7 +416,18 @@ export default function Landing() {
             <Link to={"/login"} className="hidden sm:block text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium px-3 py-1.5">
               Sign in
             </Link>
-            <Link to={"/register"} className="text-sm bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
+            <Link to={"/register"} className="text-sm text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200" style={{
+              background: "rgba(13, 148, 136, 0.75)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              boxShadow: "0 8px 32px rgba(13, 148, 136, 0.15)",
+            }} onMouseEnter={(e) => {
+              e.target.style.background = "rgba(13, 148, 136, 0.85)";
+              e.target.style.boxShadow = "0 8px 32px rgba(13, 148, 136, 0.25)";
+            }} onMouseLeave={(e) => {
+              e.target.style.background = "rgba(13, 148, 136, 0.75)";
+              e.target.style.boxShadow = "0 8px 32px rgba(13, 148, 136, 0.15)";
+            }}>
               Open Account Free
             </Link>
           </div>
@@ -340,159 +435,118 @@ export default function Landing() {
       </nav>
 
       {/* HERO */}
-      <section className="relative pt-28 pb-24 overflow-hidden bg-white">
-        {/* Animated background grid */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(#0f766e 1px,transparent 1px),linear-gradient(90deg,#0f766e 1px,transparent 1px)",
-            backgroundSize: "48px 48px",
-            animation: "gridDrift 20s linear infinite",
-          }}
-        />
+      <section className="relative pt-28 pb-24 overflow-hidden bg-gradient-to-br from-white via-teal-50/30 to-sky-50/40">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-teal-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-sky-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-teal-300/5 to-sky-300/5 rounded-full blur-3xl" />
+        </div>
 
-        {/* Soft radial glows */}
-        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-teal-300/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-10 right-0 w-[400px] h-[400px] bg-sky-300/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative max-w-6xl mx-auto px-6">
-          {/* Two-column layout: text left, live demo right */}
-          <div className="flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
             {/* ── LEFT: Copy ── */}
-            <div
-              className="flex-1 text-left"
-              style={{
-                animation: "heroFadeIn 0.75s cubic-bezier(0.16,1,0.3,1) both",
-              }}
-            >
-              {/* Eyebrow badge */}
-              <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-7 tracking-widest uppercase">
-                <span className="w-1.5 h-1.5 bg-teal-500 rounded-full animate-pulse" />
-                AI Fraud Detection · Live
+            <div className="flex-1 text-left" style={{ animation: "heroFadeIn 0.8s cubic-bezier(0.16,1,0.3,1) both" }}>
+              {/* Eyebrow badge with enhanced animation */}
+              <div className="inline-flex items-center gap-2.5 bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/60 text-teal-700 text-xs font-bold px-4 py-2 rounded-full mb-8 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-500 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+                </span>
+                <span className="tracking-wider">AI FRAUD DETECTION · LIVE</span>
               </div>
 
-              {/* Headline */}
-              <h1 className="text-4xl sm:text-5xl xl:text-[3.6rem] font-extrabold text-slate-900 leading-[1.08] tracking-tight mb-6">
+              {/* Headline with gradient */}
+              <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black text-slate-900 leading-[1.05] tracking-tight mb-8">
                 Your bank knows
                 <br />
                 <span className="relative inline-block">
-                  <span className="text-teal-600">the real you.</span>
-                  {/* Underline squiggle */}
-                  <svg
-                    className="absolute -bottom-2 left-0 w-full"
-                    viewBox="0 0 200 8"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M0 6 Q25 1 50 6 Q75 11 100 6 Q125 1 150 6 Q175 11 200 6"
-                      stroke="#0d9488"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      fill="none"
-                      style={{
-                        strokeDasharray: 220,
-                        strokeDashoffset: 220,
-                        animation:
-                          "drawLine 1s 0.5s cubic-bezier(0.16,1,0.3,1) forwards",
-                      }}
-                    />
+                  <span className="bg-gradient-to-r from-teal-600 via-teal-500 to-sky-600 bg-clip-text text-transparent animate-gradient">
+                    the real you.
+                  </span>
+                  {/* Enhanced underline */}
+                  <svg className="absolute -bottom-3 left-0 w-full" viewBox="0 0 300 12" fill="none">
+                    <path d="M0 8 Q75 2 150 8 Q225 14 300 8" stroke="url(#gradient)" strokeWidth="3" strokeLinecap="round" fill="none" style={{ strokeDasharray: 320, strokeDashoffset: 320, animation: "drawLine 1.2s 0.6s cubic-bezier(0.16,1,0.3,1) forwards" }} />
+                    <defs>
+                      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#0d9488" />
+                        <stop offset="100%" stopColor="#0ea5e9" />
+                      </linearGradient>
+                    </defs>
                   </svg>
                 </span>
                 <br />
-                Hackers don't.
+                <span className="text-slate-800">Hackers don't.</span>
               </h1>
 
-              {/* Sub */}
-              <p className="text-base sm:text-lg text-slate-500 leading-relaxed max-w-lg mb-8">
+              {/* Sub with better spacing */}
+              <p className="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-xl mb-10">
                 NeoVault's AI builds a behavioral fingerprint of{" "}
-                <span className="font-semibold text-slate-700">you</span> — your
-                devices, patterns, and rhythms. When someone else tries to be
-                you, we know instantly.
+                <span className="font-bold text-teal-600">you</span> — your devices, patterns, and rhythms. 
+                <span className="block mt-2">When someone else tries to be you, we know instantly.</span>
               </p>
 
-              {/* Trust pills row */}
-              <div className="flex flex-wrap gap-2 mb-8">
+              {/* Enhanced trust pills */}
+              <div className="flex flex-wrap gap-3 mb-10">
                 {[
-                  { icon: "⚡", text: "60-sec account opening" },
-                  { icon: "🔓", text: "No KYC under ₹1L" },
-                  { icon: "🛡️", text: "99.9% fraud blocked" },
-                ].map((pill) => (
-                  <span
-                    key={pill.text}
-                    className="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-full"
-                  >
-                    {pill.icon} {pill.text}
+                  { icon: "⚡", text: "60-sec account", gradient: "from-amber-50 to-orange-50", border: "border-amber-200", textColor: "text-amber-700" },
+                  { icon: "🔓", text: "No KYC under ₹1L", gradient: "from-blue-50 to-sky-50", border: "border-blue-200", textColor: "text-blue-700" },
+                  { icon: "🛡️", text: "99.9% fraud blocked", gradient: "from-emerald-50 to-teal-50", border: "border-emerald-200", textColor: "text-emerald-700" },
+                ].map((pill, idx) => (
+                  <span key={pill.text} className={`inline-flex items-center gap-2 bg-gradient-to-r ${pill.gradient} border ${pill.border} ${pill.textColor} text-sm font-semibold px-4 py-2.5 rounded-full shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105`} style={{ animation: `heroFadeIn 0.6s ${0.8 + idx * 0.1}s both` }}>
+                    <span className="text-base">{pill.icon}</span>
+                    {pill.text}
                   </span>
                 ))}
               </div>
 
-              {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button className="group flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold px-7 py-3.5 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg text-sm">
-                  Open Free Account
-                  <FiArrowRight
-                    size={15}
-                    className="transition-transform duration-200 group-hover:translate-x-1"
-                  />
-                </button>
-                <button className="flex items-center justify-center gap-2 border border-slate-200 hover:border-teal-300 text-slate-600 hover:text-teal-700 font-semibold px-7 py-3.5 rounded-xl transition-all duration-200 bg-white text-sm">
-                  <FiPlay size={14} className="text-teal-500" /> Watch 90-sec
-                  demo
+              {/* Enhanced CTAs */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/register" className="group relative flex items-center justify-center gap-2.5 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-300 text-base overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-teal-500/30 hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)" }}>
+                  <span className="relative z-10">Open Free Account</span>
+                  <FiArrowRight size={18} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </Link>
+                <button className="flex items-center justify-center gap-2.5 border-2 border-slate-300 hover:border-teal-500 text-slate-700 hover:text-teal-700 font-bold px-8 py-4 rounded-2xl transition-all duration-300 bg-white/80 backdrop-blur-sm text-base hover:shadow-lg hover:-translate-y-0.5">
+                  <FiPlay size={16} className="text-teal-500" /> 
+                  Watch Demo
                 </button>
               </div>
 
-              {/* Social proof */}
-              <div className="mt-8 flex items-center gap-4">
-                <div className="flex -space-x-2">
+              {/* Enhanced social proof */}
+              <div className="mt-10 flex items-center gap-5">
+                <div className="flex -space-x-3">
                   {["P", "A", "K", "R", "M"].map((l, i) => (
-                    <div
-                      key={i}
-                      className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-xs font-bold text-white"
-                      style={{
-                        background: [
-                          "#0d9488",
-                          "#0284c7",
-                          "#7c3aed",
-                          "#059669",
-                          "#d97706",
-                        ][i],
-                      }}
-                    >
+                    <div key={i} className="w-11 h-11 rounded-full border-3 border-white flex items-center justify-center text-sm font-bold text-white shadow-lg hover:scale-110 transition-transform duration-300" style={{ background: ["#0d9488", "#0284c7", "#7c3aed", "#059669", "#d97706"][i], animation: `heroFadeIn 0.5s ${1.2 + i * 0.1}s both` }}>
                       {l}
                     </div>
                   ))}
                 </div>
-                <p className="text-sm text-slate-500">
-                  <span className="font-semibold text-slate-700">
-                    2M+ Indians
-                  </span>{" "}
-                  banking safely today
-                </p>
+                <div>
+                  <p className="text-sm text-slate-600">
+                    <span className="font-bold text-slate-900 text-base">2M+ Indians</span>
+                    <br />
+                    <span className="text-slate-500">banking safely today</span>
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* ── RIGHT: Animated Live Dashboard ── */}
-            <div
-              className="flex-1 w-full max-w-md"
-              style={{
-                animation:
-                  "heroFadeIn 0.75s 0.15s cubic-bezier(0.16,1,0.3,1) both",
-              }}
-            >
-              {/* Phone frame */}
+            {/* ── RIGHT: Compact Mobile Dashboard ── */}
+            <div className="flex-1 w-full max-w-md" style={{ animation: "heroFadeIn 0.8s 0.2s cubic-bezier(0.16,1,0.3,1) both" }}>
               <div className="relative mx-auto w-full max-w-[360px]">
-                {/* Glow behind phone */}
+                {/* Glow effects */}
                 <div className="absolute inset-0 bg-teal-400/20 blur-2xl rounded-3xl scale-90 -z-10" />
 
+                {/* Phone Card */}
                 <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden">
-                  {/* Status bar */}
+                  
+                  {/* Header - Dark */}
                   <div className="bg-slate-900 px-5 pt-4 pb-5">
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <p className="text-slate-400 text-[10px] tracking-widest uppercase mb-0.5">
-                          NeoVault
+                          NEOVAULT
                         </p>
                         <p className="text-white text-xs font-medium">
                           Priya Sharma
@@ -505,6 +559,7 @@ export default function Landing() {
                         </span>
                       </div>
                     </div>
+                    
                     <p className="text-white text-3xl font-extrabold tracking-tight">
                       ₹84,250
                     </p>
@@ -514,18 +569,9 @@ export default function Landing() {
 
                     {/* Mini bar graph */}
                     <div className="mt-4 flex items-end gap-1 h-8">
-                      {[30, 55, 40, 70, 45, 85, 60, 90, 50, 75, 65, 88].map(
-                        (h, i) => (
-                          <div
-                            key={i}
-                            className="flex-1 rounded-sm bg-teal-500/40"
-                            style={{
-                              height: `${h}%`,
-                              animation: `barGrow 0.5s ${i * 0.04}s cubic-bezier(0.16,1,0.3,1) both`,
-                            }}
-                          />
-                        ),
-                      )}
+                      {[30, 55, 40, 70, 45, 85, 60, 90, 50, 75, 65, 88].map((h, i) => (
+                        <div key={i} className="flex-1 rounded-sm bg-teal-500/40" style={{ height: `${h}%`, animation: `barGrow 0.5s ${i * 0.04}s cubic-bezier(0.16,1,0.3,1) both` }} />
+                      ))}
                     </div>
                     <p className="text-slate-500 text-[10px] mt-1">
                       Spending — last 12 days
@@ -543,59 +589,17 @@ export default function Landing() {
                       </span>
                     </div>
 
-                    {/* Transaction rows with staggered animation */}
+                    {/* Transaction rows */}
                     <div className="space-y-1.5">
                       {[
-                        {
-                          icon: "✓",
-                          iconCls: "text-emerald-600 bg-emerald-50",
-                          text: "₹450 · Swiggy",
-                          sub: "Bengaluru · Just now",
-                          badge: "Approved",
-                          badgeCls:
-                            "text-emerald-700 bg-emerald-50 border-emerald-200",
-                          delay: "0s",
-                        },
-                        {
-                          icon: "🚫",
-                          iconCls: "text-rose-600 bg-rose-50",
-                          text: "$5,000 wire transfer",
-                          sub: "Unknown device · Blocked",
-                          badge: "Fraud Stopped",
-                          badgeCls: "text-rose-700 bg-rose-50 border-rose-200",
-                          delay: "0.08s",
-                        },
-                        {
-                          icon: "✓",
-                          iconCls: "text-emerald-600 bg-emerald-50",
-                          text: "€12 · Café, Amsterdam",
-                          sub: "Travel mode · Verified",
-                          badge: "Travel OK",
-                          badgeCls: "text-sky-700 bg-sky-50 border-sky-200",
-                          delay: "0.16s",
-                        },
-                        {
-                          icon: "⚠",
-                          iconCls: "text-amber-600 bg-amber-50",
-                          text: "₹50,000 · 3 AM transfer",
-                          sub: "Unusual timing · Challenged",
-                          badge: "Challenged",
-                          badgeCls:
-                            "text-amber-700 bg-amber-50 border-amber-200",
-                          delay: "0.24s",
-                        },
+                        { icon: "✓", iconCls: "text-emerald-600 bg-emerald-50", text: "₹450 · Swiggy", sub: "Bengaluru · Just now", badge: "Approved", badgeCls: "text-emerald-700 bg-emerald-50 border-emerald-200", delay: "0s" },
+                        { icon: "🚫", iconCls: "text-rose-600 bg-rose-50", text: "$5,000 wire transfer", sub: "Unknown device · Blocked", badge: "Fraud Stopped", badgeCls: "text-rose-700 bg-rose-50 border-rose-200", delay: "0.08s" },
+                        { icon: "✓", iconCls: "text-emerald-600 bg-emerald-50", text: "€12 · Café, Amsterdam", sub: "Travel mode · Verified", badge: "Travel OK", badgeCls: "text-sky-700 bg-sky-50 border-sky-200", delay: "0.16s" },
+                        { icon: "⚠", iconCls: "text-amber-600 bg-amber-50", text: "₹50,000 · 3 AM transfer", sub: "Unusual timing · Challenged", badge: "Challenged", badgeCls: "text-amber-700 bg-amber-50 border-amber-200", delay: "0.24s" },
                       ].map((row, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0"
-                          style={{
-                            animation: `heroFadeIn 0.5s ${row.delay} both`,
-                          }}
-                        >
+                        <div key={i} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0" style={{ animation: `heroFadeIn 0.5s ${row.delay} both` }}>
                           <div className="flex items-center gap-2.5">
-                            <div
-                              className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${row.iconCls}`}
-                            >
+                            <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${row.iconCls}`}>
                               {row.icon}
                             </div>
                             <div>
@@ -607,16 +611,14 @@ export default function Landing() {
                               </p>
                             </div>
                           </div>
-                          <span
-                            className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${row.badgeCls}`}
-                          >
+                          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${row.badgeCls}`}>
                             {row.badge}
                           </span>
                         </div>
                       ))}
                     </div>
 
-                    {/* AI score bottom bar */}
+                    {/* AI score bar */}
                     <div className="mt-3 bg-slate-50 rounded-xl px-3 py-2.5 flex items-center gap-3">
                       <div className="flex-1">
                         <div className="flex justify-between text-[10px] mb-1">
@@ -628,14 +630,7 @@ export default function Landing() {
                           </span>
                         </div>
                         <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full"
-                            style={{
-                              width: "97%",
-                              animation:
-                                "scoreGrow 1.2s 0.4s cubic-bezier(0.16,1,0.3,1) both",
-                            }}
-                          />
+                          <div className="h-full bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full" style={{ width: "97%", animation: "scoreGrow 1.2s 0.4s cubic-bezier(0.16,1,0.3,1) both" }} />
                         </div>
                       </div>
                       <FiShield size={16} className="text-teal-500 shrink-0" />
@@ -653,6 +648,14 @@ export default function Landing() {
         from { opacity: 0; transform: translateY(18px); }
         to   { opacity: 1; transform: translateY(0); }
       }
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-20px); }
+        to   { opacity: 1; transform: translateX(0); }
+      }
+      @keyframes countUp {
+        from { opacity: 0; transform: scale(0.8); }
+        to   { opacity: 1; transform: scale(1); }
+      }
       @keyframes gridDrift {
         from { background-position: 0 0; }
         to   { background-position: 48px 48px; }
@@ -668,11 +671,22 @@ export default function Landing() {
         from { width: 0; }
         to   { width: 97%; }
       }
+      @keyframes gradient {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      .animate-shimmer {
+        animation: shimmer 2s infinite;
+      }
     `}</style>
       </section>
 
       {/* STATS */}
-      <section className="relative py-20 bg-white overflow-hidden">
+      <section className="relative py-20 bg-white/90 overflow-hidden">
         {/* Faint dot grid background */}
         <div
           className="absolute inset-0 opacity-[0.035]"
@@ -1111,10 +1125,10 @@ export default function Landing() {
           {/* Header */}
           <Reveal className="text-center mb-16">
             <p className="text-teal-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">
-              Side by side
+              
             </p>
             <h2 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight tracking-tight mb-5">
-              React vs.{" "}
+              {" "}
               <span
                 style={{
                   background: "linear-gradient(90deg, #2dd4bf, #38bdf8)",
@@ -1123,7 +1137,7 @@ export default function Landing() {
                   backgroundClip: "text",
                 }}
               >
-                Predict.
+                
               </span>
             </h2>
             <p className="text-slate-400 text-base max-w-lg mx-auto">
@@ -1421,7 +1435,18 @@ export default function Landing() {
                         ))}
                       </div>
 
-                      <button className="w-full bg-teal-600 text-white text-sm font-semibold py-2.5 rounded-xl">
+                      <button className="w-full text-white text-sm font-semibold py-2.5 rounded-xl transition-all duration-200" style={{
+                        background: "rgba(13, 148, 136, 0.75)",
+                        backdropFilter: "blur(20px)",
+                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                        boxShadow: "0 8px 32px rgba(13, 148, 136, 0.15)",
+                      }} onMouseEnter={(e) => {
+                        e.target.style.background = "rgba(13, 148, 136, 0.85)";
+                        e.target.style.boxShadow = "0 8px 32px rgba(13, 148, 136, 0.25)";
+                      }} onMouseLeave={(e) => {
+                        e.target.style.background = "rgba(13, 148, 136, 0.75)";
+                        e.target.style.boxShadow = "0 8px 32px rgba(13, 148, 136, 0.15)";
+                      }}>
                         Open Account Free →
                       </button>
                     </div>
@@ -1690,7 +1715,18 @@ export default function Landing() {
                     </p>
 
                     <div className="mt-6">
-                      <button className="group inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg text-sm">
+                      <button className="group inline-flex items-center gap-2 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 text-sm" style={{
+                        background: "rgba(13, 148, 136, 0.75)",
+                        backdropFilter: "blur(20px)",
+                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                        boxShadow: "0 8px 32px rgba(13, 148, 136, 0.15)",
+                      }} onMouseEnter={(e) => {
+                        e.target.style.background = "rgba(13, 148, 136, 0.85)";
+                        e.target.style.boxShadow = "0 8px 32px rgba(13, 148, 136, 0.25)";
+                      }} onMouseLeave={(e) => {
+                        e.target.style.background = "rgba(13, 148, 136, 0.75)";
+                        e.target.style.boxShadow = "0 8px 32px rgba(13, 148, 136, 0.15)";
+                      }}>
                         Open Free Account
                         <FiArrowRight
                           size={14}
@@ -1814,7 +1850,7 @@ export default function Landing() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white/90">
         <div className="max-w-6xl mx-auto px-6">
           <Reveal className="text-center mb-14">
             <p className="text-teal-600 text-sm font-semibold uppercase tracking-widest mb-3">
@@ -1928,7 +1964,18 @@ export default function Landing() {
               security.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white hover:bg-slate-50 active:bg-slate-100 text-teal-700 font-bold px-8 py-3.5 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg text-sm">
+              <button className="w-full sm:w-auto flex items-center justify-center gap-2 text-teal-700 font-bold px-8 py-3.5 rounded-xl transition-all duration-200 text-sm" style={{
+                background: "rgba(255, 255, 255, 0.85)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid rgba(255, 255, 255, 0.3)",
+                boxShadow: "0 8px 32px rgba(255, 255, 255, 0.1)",
+              }} onMouseEnter={(e) => {
+                e.target.style.background = "rgba(255, 255, 255, 0.95)";
+                e.target.style.boxShadow = "0 8px 32px rgba(255, 255, 255, 0.15)";
+              }} onMouseLeave={(e) => {
+                e.target.style.background = "rgba(255, 255, 255, 0.85)";
+                e.target.style.boxShadow = "0 8px 32px rgba(255, 255, 255, 0.1)";
+              }}>
                 Open Free Account <FiArrowRight size={16} />
               </button>
               <button className="w-full sm:w-auto flex items-center justify-center gap-2 border border-white/40 hover:border-white/70 text-white font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 text-sm">
@@ -1968,6 +2015,7 @@ export default function Landing() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }

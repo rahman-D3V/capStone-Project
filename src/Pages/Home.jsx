@@ -1377,13 +1377,153 @@
 
 import { useState, useEffect } from "react";
 
+// ─── Global Animation Styles ───────────────────────────────────────────────────
+const animationStyles = `
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(0, 17, 58, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(0, 17, 58, 0.5);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.8s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.8s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
+
+  /* Smooth transitions */
+  * {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  button {
+    position: relative;
+    overflow: hidden;
+  }
+
+  button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.5s ease;
+  }
+
+  button:hover::before {
+    left: 100%;
+  }
+`;
+
+// Inject animation styles
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.innerHTML = animationStyles;
+  document.head.appendChild(style);
+}
+
 export default function Home() {
   return (
-    <div className="font-[Inter] bg-[#f7f9fb] text-[#191c1e]">
+    <div className="font-[Inter] bg-[#f7f9fb] text-[#191c1e] min-h-screen">
       <Navbar />
-      <Hero />
-      <TrustStrip />
-      <BankingFeatures />
+      <main>
+        <Hero />
+        <TrustStrip />
+        <BankingFeatures />
+        <StatisticsSection />
+        <CTASection />
+      </main>
       <Footer />
     </div>
   );
@@ -1393,6 +1533,7 @@ export default function Home() {
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hoveredNav, setHoveredNav] = useState(null);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 8);
@@ -1402,46 +1543,62 @@ function Navbar() {
 
   return (
     <>
-      {/* top bar */}
-      <div className="bg-[#00113a] text-white text-[10px] px-6 py-1 flex justify-between items-center uppercase tracking-[0.1em]">
-        <div className="flex gap-4">
-          <a className="text-[#dbe1ff]">Screen Reader Access</a>
-          <a className="text-[#dbe1ff]">Skip to Main</a>
+      {/* Premium top bar */}
+      <div className="bg-gradient-to-r from-[#00113a] to-[#002366] text-white text-[10px] px-6 py-2 flex justify-between items-center uppercase tracking-[0.12em] font-medium">
+        <div className="flex gap-8">
+          <a href="#" className="text-[#dbe1ff] hover:text-white transition duration-300">Screen Reader Access</a>
+          <a href="#" className="text-[#dbe1ff] hover:text-white transition duration-300">Skip to Main</a>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 hover:scale-105 transition duration-300 cursor-pointer">
           <span className="material-symbols-outlined text-[14px]">support_agent</span>
           <span>Customer Care</span>
         </div>
       </div>
 
-      {/* main nav */}
+      {/* Main nav */}
       <header
-        className={`sticky top-0 z-50 px-6 py-3 flex justify-between items-center backdrop-blur-md transition ${
+        className={`sticky top-0 z-50 px-8 py-4 flex justify-between items-center backdrop-blur-2xl transition-all duration-500 ${
           scrolled
-            ? "bg-[rgba(247,249,251,0.95)] shadow-[0_2px_16px_rgba(0,17,58,0.08)]"
-            : "bg-[#f7f9fb]"
+            ? "bg-[rgba(247,249,251,0.92)] shadow-[0_8px_32px_rgba(0,17,58,0.12)] border-b border-[rgba(0,17,58,0.05)]"
+            : "bg-[rgba(247,249,251,0.5)] border-b border-[rgba(0,17,58,0.02)]"
         }`}
       >
-        <div className="flex items-center gap-8">
-          <div className="font-black text-[22px] text-[#00113a] uppercase tracking-[-0.04em]">
+        <div className="flex items-center gap-12">
+          <div className="font-black text-[24px] text-[#00113a] uppercase tracking-[-0.04em] hover:scale-105 transition duration-300 cursor-pointer">
             Sovereign Bank
           </div>
 
-          <nav className="flex gap-6">
-            <a className="text-[#002366] border-b-2 border-[#002366] pb-1 font-bold text-[14px]">
-              Personal
-            </a>
-            <a className="text-slate-500 font-bold text-[14px]">Corporate</a>
-            <a className="text-slate-500 font-bold text-[14px]">Wealth</a>
-            <a className="text-slate-500 font-bold text-[14px]">NRI</a>
+          <nav className="flex gap-12">
+            {[{ name: "Personal", active: true }, { name: "Corporate" }, { name: "Wealth" }, { name: "NRI" }].map((item) => (
+              <a
+                key={item.name}
+                href="#"
+                onMouseEnter={() => setHoveredNav(item.name)}
+                onMouseLeave={() => setHoveredNav(null)}
+                className={`relative font-bold text-[14px] transition duration-300 ${
+                  item.active
+                    ? "text-[#002366]"
+                    : hoveredNav === item.name
+                    ? "text-[#00113a]"
+                    : "text-[#666]"
+                }`}
+              >
+                {item.name}
+                <span
+                  className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#002366] to-[#758dd5] transition-all duration-300 ${
+                    item.active || hoveredNav === item.name ? "w-full" : "w-0"
+                  }`}
+                />
+              </a>
+            ))}
           </nav>
         </div>
 
-        <div className="flex gap-3">
-          <button className="px-6 py-2 rounded-full border border-[#00113a] text-[#00113a] font-bold text-[13px]">
+        <div className="flex gap-4 items-center">
+          <button className="px-6 py-2.5 rounded-full border-2 border-[#00113a] text-[#00113a] font-bold text-[13px] hover:bg-[#00113a] hover:text-white hover:scale-105 transition-all duration-300 shadow-[0_4px_12px_rgba(0,17,58,0.1)]">
             Open Account
           </button>
-          <button className="px-7 py-2 rounded-full bg-[#00113a] text-white font-bold text-[13px]">
+          <button className="px-7 py-2.5 rounded-full bg-gradient-to-r from-[#00113a] to-[#002366] text-white font-bold text-[13px] hover:shadow-[0_8px_24px_rgba(0,17,58,0.3)] hover:scale-105 transition-all duration-300">
             Login
           </button>
         </div>
@@ -1450,52 +1607,130 @@ function Navbar() {
   );
 }
 
-/* ================= HERO ================= */
+/* ================= HERO SECTION ================= */
 
 function Hero() {
+  const [isHoveredCard, setIsHoveredCard] = useState(false);
+
   return (
-    <section className="bg-[#002366] min-h-[540px] flex items-center relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,17,58,0.9),rgba(0,35,102,0.7))]" />
+    <section className="relative bg-gradient-to-br from-[#002366] via-[#00113a] to-[#001a4d] min-h-screen flex items-center justify-center overflow-hidden py-20">
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#002366] rounded-full blur-3xl opacity-20 animate-float" />
+      <div className="absolute bottom-20 left-0 w-72 h-72 bg-[#758dd5] rounded-full blur-3xl opacity-15 animate-float" style={{ animationDelay: "1s" }} />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(118,141,213,0.1),rgba(0,17,58,0.2))]" />
 
-      <div className="max-w-[1200px] mx-auto px-6 py-20 grid grid-cols-2 gap-16 items-center relative z-10 w-full">
-        <div>
-          <span className="text-[#758dd5] text-[12px] uppercase tracking-[0.18em] font-bold mb-5 inline-block">
-            AI-Powered Banking
-          </span>
+      <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-2 gap-20 items-center relative z-10 w-full">
+        {/* Left content */}
+        <div className="space-y-8">
+          <div className="animate-fade-in-up">
+            <span className="inline-block text-[#758dd5] text-[12px] uppercase tracking-[0.18em] font-bold mb-6 px-4 py-2 bg-[rgba(118,141,213,0.1)] rounded-full border border-[rgba(118,141,213,0.2)]">
+              ✨ AI-Powered Banking
+            </span>
+          </div>
 
-          <h1 className="text-white font-black text-[58px] leading-[1.1] mb-6">
+          <h1 className="text-white font-black text-[64px] leading-[1.15] mb-6 animate-fade-in-up delay-1">
             Secure Banking,<br />
-            Smarter Fraud<br />
+            <span className="bg-gradient-to-r from-[#dbe1ff] to-[#758dd5] bg-clip-text text-transparent">Smarter Fraud</span><br />
             Protection.
           </h1>
 
-          <p className="text-[#dbe1ff] text-[17px] leading-[1.7] max-w-[480px] mb-9">
-            Manage your money, transfer funds, and stay protected with AI-assisted fraud detection.
+          <p className="text-[#dbe1ff] text-[18px] leading-[1.8] max-w-[520px] mb-10 animate-fade-in-up delay-2 opacity-90">
+            Manage your money, transfer funds, and stay protected with AI-assisted fraud detection that works silently in the background.
           </p>
 
-          <div className="flex gap-4 mb-6">
-            <button className="px-9 py-3 rounded-full bg-white text-[#00113a] font-extrabold">
+          <div className="flex gap-6 mb-10 animate-fade-in-up delay-3">
+            <button className="group px-10 py-4 rounded-full bg-white text-[#00113a] font-extrabold text-[15px] shadow-[0_12px_32px_rgba(255,255,255,0.2)] hover:shadow-[0_20px_48px_rgba(255,255,255,0.3)] hover:scale-110 transition-all duration-300">
               Open Account
+              <span className="material-symbols-outlined text-[16px] ml-2 group-hover:translate-x-1 transition duration-300">arrow_forward</span>
             </button>
-            <button className="px-9 py-3 rounded-full border border-white text-white">
+            <button className="px-10 py-4 rounded-full border-2 border-white text-white font-bold text-[15px] hover:bg-white hover:text-[#00113a] hover:scale-105 transition-all duration-300 backdrop-blur-sm">
               Login
             </button>
           </div>
+
+          <div className="flex gap-8 pt-6 animate-fade-in-up delay-4 text-[14px] text-[#dbe1ff]">
+            <div className="flex items-center gap-2 hover:translate-x-1 transition duration-300">
+              <span className="material-symbols-outlined text-[18px] text-[#758dd5]">flash_on</span>
+              <span>Fast Transfers</span>
+            </div>
+            <div className="flex items-center gap-2 hover:translate-x-1 transition duration-300">
+              <span className="material-symbols-outlined text-[18px] text-[#758dd5]">verified_user</span>
+              <span>Secure Login</span>
+            </div>
+            <div className="flex items-center gap-2 hover:translate-x-1 transition duration-300">
+              <span className="material-symbols-outlined text-[18px] text-[#758dd5]">shield</span>
+              <span>Smart Checks</span>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <div className="bg-white rounded-[20px] p-8 shadow-[0_24px_64px_rgba(0,17,58,0.35)]">
-            <h2 className="font-black text-[20px] text-[#00113a] mb-6">
-              Secure Portal
-            </h2>
+        {/* Right card */}
+        <div className="animate-slide-in-right delay-1">
+          <div
+            onMouseEnter={() => setIsHoveredCard(true)}
+            onMouseLeave={() => setIsHoveredCard(false)}
+            className={`relative group rounded-[28px] overflow-hidden backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-500 ${
+              isHoveredCard
+                ? "shadow-[0_32px_64px_rgba(0,17,58,0.4)]"
+                : "shadow-[0_16px_48px_rgba(0,17,58,0.3)]"
+            }`}
+          >
+            {/* Glass effect background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 opacity-50" />
+            
+            {/* Content */}
+            <div className="relative p-10 bg-gradient-to-br from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)]">
+              <h2 className="font-black text-[28px] text-white mb-8 flex items-center gap-3">
+                <span className="material-symbols-outlined text-[32px] text-[#dbe1ff]">verified</span>
+                Secure Portal
+              </h2>
 
-            <div className="flex flex-col gap-3">
-              <button className="p-4 rounded-xl bg-[#00113a] text-white flex justify-between">
-                Personal Banking
-              </button>
-              <button className="p-4 rounded-xl bg-[#f2f4f6] text-black flex justify-between">
-                Corporate Banking
-              </button>
+              <div className="space-y-4">
+                {[
+                  { icon: "person", label: "Personal Banking", desc: "Manage savings & transfers" },
+                  { icon: "business_center", label: "Corporate Banking", desc: "CMS, Trade, MSME services" },
+                ].map((item, idx) => (
+                  <button
+                    key={item.label}
+                    className={`w-full group/btn p-5 rounded-[16px] border transition-all duration-300 flex items-center justify-between ${
+                      idx === 0
+                        ? "bg-[#00113a] border-[#758dd5] hover:border-white hover:shadow-[0_12px_32px_rgba(118,141,213,0.3)]"
+                        : "bg-white/10 border-white/10 hover:bg-white/20 hover:border-white/30 hover:shadow-[0_12px_32px_rgba(255,255,255,0.1)]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                        idx === 0
+                          ? "bg-[#758dd5] group-hover/btn:scale-110"
+                          : "bg-white/20 group-hover/btn:bg-white/40 group-hover/btn:scale-110"
+                      }`}>
+                        <span className={`material-symbols-outlined text-[20px] ${idx === 0 ? "text-white" : "text-white"}`}>
+                          {item.icon}
+                        </span>
+                      </div>
+                      <div className="text-left">
+                        <div className={`font-bold text-[15px] ${idx === 0 ? "text-white" : "text-white"}`}>
+                          {item.label}
+                        </div>
+                        <div className={`text-[12px] mt-1 ${idx === 0 ? "text-[#dbe1ff]" : "text-white/70"}`}>
+                          {item.desc}
+                        </div>
+                      </div>
+                    </div>
+                    <span className={`material-symbols-outlined text-[20px] group-hover/btn:translate-x-1 transition-all duration-300 ${idx === 0 ? "text-[#dbe1ff]" : "text-white"}`}>
+                      arrow_forward
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-8 pt-8 border-t border-white/10 flex gap-3 flex-wrap">
+                {["New Registration", "Forgot Password", "Security Tips"].map((link) => (
+                  <a key={link} href="#" className="text-[11px] text-[#dbe1ff] font-bold uppercase tracking-[0.06em] hover:text-white transition duration-300">
+                    {link}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -1507,59 +1742,197 @@ function Hero() {
 /* ================= TRUST STRIP ================= */
 
 function TrustStrip() {
+  const items = [
+    { icon: "flash_on", label: "Instant Setup", desc: "Go live in under 3 minutes" },
+    { icon: "verified_user", label: "OTP Verified", desc: "Every login secured" },
+    { icon: "shield", label: "Fraud Protection", desc: "AI-powered checks" },
+  ];
+
   return (
-    <section className="bg-white border-b border-[#c5c6d2] px-6 py-6">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-3">
-        {["Instant Setup", "OTP Secure", "Fraud Detection"].map((item, i) => (
-          <div
-            key={i}
-            className={`flex items-center gap-4 px-8 ${
-              i < 2 ? "border-r border-[#c5c6d2]" : ""
-            }`}
-          >
-            <div className="w-10 h-10 bg-[#f2f4f6] rounded-lg" />
-            <div className="text-[13px] font-bold text-[#00113a]">
-              {item}
+    <section className="bg-gradient-to-r from-[rgba(247,249,251,0.8)] to-[rgba(247,249,251,0.95)] backdrop-blur-md border-b border-[#c5c6d2]/20 px-6 py-16">
+      <div className="max-w-[1200px] mx-auto">
+        <div className="grid grid-cols-3 gap-12">
+          {items.map((item, i) => (
+            <div
+              key={i}
+              className="group flex items-center gap-6 p-6 rounded-[20px] hover:bg-white/60 hover:shadow-[0_8px_24px_rgba(0,17,58,0.1)] transition-all duration-300 cursor-pointer"
+            >
+              <div className="w-16 h-16 bg-gradient-to-br from-[#758dd5]/20 to-[#002366]/10 rounded-[14px] flex items-center justify-center group-hover:scale-110 group-hover:shadow-[0_8px_20px_rgba(118,141,213,0.3)] transition-all duration-300">
+                <span className="material-symbols-outlined text-[24px] text-[#002366]">
+                  {item.icon}
+                </span>
+              </div>
+              <div>
+                <div className="font-bold text-[#00113a] text-[16px] mb-1">
+                  {item.label}
+                </div>
+                <div className="text-[13px] text-[#666] group-hover:text-[#333] transition duration-300">
+                  {item.desc}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-/* ================= FEATURES ================= */
+/* ================= BANKING FEATURES ================= */
 
 function BankingFeatures() {
-  const cards = ["Open Account", "Transfer Money", "Check Balance", "Transactions"];
+  const [hoveredCard, setHoveredCard] = useState(null);
+
+  const cards = [
+    { icon: "account_balance_wallet", title: "Open Account", desc: "Start banking in minutes with instant digital KYC verification." },
+    { icon: "swap_horiz", title: "Send & Receive", desc: "Instant transfers via UPI, IMPS, NEFT with fraud checks." },
+    { icon: "account_balance", title: "Check Balance", desc: "Real-time balance and available credit at a glance." },
+    { icon: "receipt_long", title: "Transaction History", desc: "Full transaction history with smart filters and export." },
+  ];
 
   return (
-    <section className="max-w-[1200px] mx-auto px-6 py-20">
-      <h2 className="text-[36px] font-black text-[#00113a] mb-2">
-        Core Banking Services
-      </h2>
-      <p className="text-slate-500 mb-10">
-        Everything you need in one place
-      </p>
+    <section className="px-6 py-24 bg-gradient-to-b from-[#f7f9fb] to-white">
+      <div className="max-w-[1200px] mx-auto">
+        {/* Section header */}
+        <div className="mb-16 text-center animate-fade-in-up">
+          <h2 className="text-[48px] font-black text-[#00113a] mb-4">
+            Core Banking Services
+          </h2>
+          <p className="text-[18px] text-[#666] max-w-[600px] mx-auto">
+            Everything you need to manage your money — all in one intuitive place
+          </p>
+        </div>
 
-      <div className="grid grid-cols-4 gap-5">
-        {cards.map((c) => (
-          <div
-            key={c}
-            className="bg-white rounded-[20px] p-7 border border-[#c5c6d230] hover:shadow-xl transition cursor-pointer"
-          >
-            <div className="w-12 h-12 bg-[#f2f4f6] rounded-lg mb-4" />
+        {/* Cards grid */}
+        <div className="grid grid-cols-4 gap-6">
+          {cards.map((card, idx) => (
+            <div
+              key={card.title}
+              onMouseEnter={() => setHoveredCard(idx)}
+              onMouseLeave={() => setHoveredCard(null)}
+              className="group animate-fade-in-up"
+              style={{ animationDelay: `${idx * 100}ms` }}
+            >
+              <div
+                className={`h-full bg-white rounded-[24px] p-8 border-2 transition-all duration-300 cursor-pointer ${
+                  hoveredCard === idx
+                    ? "border-[#758dd5] shadow-[0_20px_48px_rgba(118,141,213,0.2)] transform -translate-y-2"
+                    : "border-[#c5c6d2]/20 shadow-[0_8px_24px_rgba(0,17,58,0.05)]"
+                }`}
+              >
+                {/* Icon */}
+                <div
+                  className={`w-16 h-16 rounded-[16px] flex items-center justify-center mb-6 transition-all duration-300 ${
+                    hoveredCard === idx
+                      ? "bg-gradient-to-br from-[#758dd5] to-[#002366] scale-110 shadow-[0_12px_32px_rgba(118,141,213,0.3)]"
+                      : "bg-gradient-to-br from-[#758dd5]/10 to-[#002366]/10 group-hover:scale-105"
+                  }`}
+                >
+                  <span
+                    className={`material-symbols-outlined text-[28px] transition-all duration-300 ${
+                      hoveredCard === idx ? "text-white scale-110" : "text-[#002366]"
+                    }`}
+                  >
+                    {card.icon}
+                  </span>
+                </div>
 
-            <h3 className="font-bold text-[#00113a] mb-2">{c}</h3>
-            <p className="text-[13px] text-slate-500 mb-4">
-              Description goes here
-            </p>
+                {/* Content */}
+                <h3 className="font-bold text-[#00113a] text-[20px] mb-3">
+                  {card.title}
+                </h3>
+                <p className="text-[14px] text-[#666] leading-[1.6] mb-6">
+                  {card.desc}
+                </p>
 
-            <span className="text-[#002366] text-[12px] font-bold uppercase">
-              Explore →
-            </span>
-          </div>
-        ))}
+                {/* CTA */}
+                <button className="inline-flex items-center gap-2 text-[13px] font-bold text-[#002366] uppercase tracking-[0.06em] group-hover/btn:text-[#00113a] transition-all duration-300">
+                  Explore
+                  <span className="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-all duration-300">
+                    arrow_forward
+                  </span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================= STATISTICS SECTION ================= */
+
+function StatisticsSection() {
+  const stats = [
+    { label: "Active Users", value: "10,000+", icon: "people" },
+    { label: "Transactions", value: "5M+", icon: "swap_horiz" },
+    { label: "Security Score", value: "99.9%", icon: "shield" },
+    { label: "Uptime", value: "100%", icon: "check_circle" },
+  ];
+
+  return (
+    <section className="px-6 py-24 bg-gradient-to-b from-white via-[#f7f9fb] to-white">
+      <div className="max-w-[1200px] mx-auto">
+        <div className="grid grid-cols-4 gap-8">
+          {stats.map((stat, idx) => (
+            <div
+              key={stat.label}
+              className="group text-center p-8 rounded-[20px] bg-gradient-to-br from-white to-[#f7f9fb] border border-[#c5c6d2]/20 hover:border-[#758dd5]/50 hover:shadow-[0_16px_40px_rgba(118,141,213,0.15)] transition-all duration-300 animate-fade-in-up"
+              style={{ animationDelay: `${idx * 100}ms` }}
+            >
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-[#758dd5]/20 to-[#002366]/10 mb-6 group-hover:scale-110 group-hover:shadow-[0_12px_24px_rgba(118,141,213,0.2)] transition-all duration-300">
+                <span className="material-symbols-outlined text-[24px] text-[#002366]">
+                  {stat.icon}
+                </span>
+              </div>
+              <h3 className="text-[32px] font-black text-[#00113a] mb-2 group-hover:scale-110 transition-all duration-300">
+                {stat.value}
+              </h3>
+              <p className="text-[14px] text-[#666] font-medium">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================= CTA SECTION ================= */
+
+function CTASection() {
+  return (
+    <section className="relative px-6 py-32 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#002366] via-[#00113a] to-[#001a4d]" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#758dd5] rounded-full blur-3xl opacity-15 animate-float" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#002366] rounded-full blur-3xl opacity-20" />
+
+      <div className="max-w-[800px] mx-auto relative z-10 text-center animate-fade-in-up">
+        <span className="inline-block px-4 py-2 rounded-full bg-[rgba(118,141,213,0.2)] border border-[rgba(118,141,213,0.3)] text-[#dbe1ff] text-[12px] font-bold uppercase tracking-[0.12em] mb-8">
+          ✨ Join Today
+        </span>
+
+        <h2 className="text-white font-black text-[56px] leading-[1.2] mb-6">
+          Ready to experience<br />
+          <span className="bg-gradient-to-r from-[#dbe1ff] to-[#758dd5] bg-clip-text text-transparent">smarter banking?</span>
+        </h2>
+
+        <p className="text-[#dbe1ff] text-[18px] leading-[1.8] max-w-[600px] mx-auto mb-12 opacity-90">
+          Join thousands of customers who trust Sovereign Bank for secure, intelligent financial management. Open your account in minutes.
+        </p>
+
+        <div className="flex gap-6 justify-center flex-wrap animate-fade-in-up delay-1">
+          <button className="group px-10 py-4 rounded-full bg-white text-[#00113a] font-bold text-[16px] shadow-[0_12px_32px_rgba(255,255,255,0.2)] hover:shadow-[0_20px_48px_rgba(255,255,255,0.3)] hover:scale-110 transition-all duration-300 flex items-center gap-2">
+            Open Account Now
+            <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-all duration-300">arrow_forward</span>
+          </button>
+          <button className="px-10 py-4 rounded-full border-2 border-white text-white font-bold text-[16px] hover:bg-white hover:text-[#00113a] hover:scale-105 transition-all duration-300 backdrop-blur-sm">
+            Learn More
+          </button>
+        </div>
       </div>
     </section>
   );
@@ -1568,37 +1941,85 @@ function BankingFeatures() {
 /* ================= FOOTER ================= */
 
 function Footer() {
-  return (
-    <footer className="bg-[#00113a] text-white px-6 pt-16">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-4 gap-10 pb-12">
-        <div>
-          <h3 className="font-black text-[20px] mb-4">
-            SOVEREIGN BANK
-          </h3>
-          <p className="text-slate-400 text-sm">
-            Secure banking for modern world.
-          </p>
-        </div>
+  const currentYear = new Date().getFullYear();
 
-        {["About", "Contact", "Legal"].map((h) => (
-          <div key={h}>
-            <h5 className="text-xs uppercase mb-4 text-[#dbe1ff]">
-              {h}
-            </h5>
-            <div className="flex flex-col gap-2 text-sm text-slate-400">
-              <a>Item 1</a>
-              <a>Item 2</a>
-              <a>Item 3</a>
+  const footerLinks = [
+    { heading: "Company", items: ["About Us", "Careers", "Press"] },
+    { heading: "Support", items: ["Help Center", "Contact Us", "Status"] },
+    { heading: "Legal", items: ["Privacy Policy", "Terms of Service", "Security"] },
+  ];
+
+  return (
+    <footer className="relative bg-gradient-to-b from-[#00113a] to-[#001a4d] text-white px-6 pt-24 pb-8 overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-[#758dd5] rounded-full blur-3xl opacity-10" />
+      
+      <div className="relative z-10">
+        {/* Main footer content */}
+        <div className="max-w-[1200px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-16 mb-16">
+          {/* Brand */}
+          <div className="col-span-2 md:col-span-1">
+            <div className="font-black text-[24px] mb-4 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[28px]">verified</span>
+              SOVEREIGN BANK
+            </div>
+            <p className="text-[#dbe1ff] text-[14px] leading-[1.7] mb-6">
+              Secure, AI-powered banking for the modern world. Your money, protected every step.
+            </p>
+            <div className="flex gap-4">
+              {[{ icon: "mail", label: "Email" }, { icon: "phone", label: "Phone" }].map((contact) => (
+                <button
+                  key={contact.label}
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
+                  title={contact.label}
+                >
+                  <span className="material-symbols-outlined text-[18px] text-[#dbe1ff]">{contact.icon}</span>
+                </button>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="border-t border-white/10 py-5 text-xs text-slate-500 flex justify-between max-w-[1200px] mx-auto">
-        <span>© 2024 Sovereign Bank</span>
-        <div className="flex gap-5">
-          <a>Privacy</a>
-          <a>Terms</a>
+          {/* Links */}
+          {footerLinks.map((section) => (
+            <div key={section.heading}>
+              <h5 className="font-bold text-[14px] text-white mb-6 uppercase tracking-[0.08em]">
+                {section.heading}
+              </h5>
+              <ul className="space-y-3">
+                {section.items.map((item) => (
+                  <li key={item}>
+                    <a
+                      href="#"
+                      className="text-[#dbe1ff] hover:text-white text-[14px] transition-all duration-300 hover:translate-x-1 inline-block"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* Divider */}
+        <div className="max-w-[1200px] mx-auto border-t border-white/10 mb-8" />
+
+        {/* Bottom bar */}
+        <div className="max-w-[1200px] mx-auto flex justify-between items-center flex-wrap gap-6">
+          <p className="text-[#94a3b8] text-[12px] uppercase tracking-[0.08em]">
+            © {currentYear} Sovereign Bank. All rights reserved.
+          </p>
+          <div className="flex gap-8">
+            {["Privacy", "Terms", "Compliance"].map((link) => (
+              <a
+                key={link}
+                href="#"
+                className="text-[#dbe1ff] hover:text-white text-[12px] uppercase tracking-[0.08em] transition-all duration-300 hover:translate-x-1 inline-block"
+              >
+                {link}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
